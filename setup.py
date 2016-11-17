@@ -18,26 +18,31 @@ install_requires = [x.strip() for x in all_reqs if 'git+' not in x]
 dependency_links = [x.strip().replace('git+', '') for x in all_reqs if x.startswith('git+')]
 
 setup(
-    name='linteralls',
+    name='linter',
     version=__version__,
     description='A python package that can be installed with pip.',
     long_description=long_description,
-    url='https://github.com/eodolphi/linteralls-client',
-    download_url='https://github.com/eodolphi/linteralls-client/tarball/' + __version__,
+    url='https://github.com/eodolphi/linter-client',
+    download_url='https://github.com/eodolphi/linter-client/tarball/' + __version__,
     license='BSD',
     classifiers=[
-      'Development Status :: 3 - Alpha',
-      'Intended Audience :: Developers',
-      'Programming Language :: Python :: 3',
+        'Development Status :: 3 - Alpha',
+        'Intended Audience :: Developers',
+        'Programming Language :: Python :: 3',
     ],
     keywords='',
     packages=find_packages(exclude=['docs', 'tests*']),
     include_package_data=True,
     author='Ernst Odolphi',
-    install_requires=install_requires,
+    install_requires=['requests', 'gitpython'],
+    test_requires=['nose'],
+    extras_require={
+        'dev': ['ipdb', 'flake8', 'coverage']
+    },
+    test_suite='nose.collector',
     dependency_links=dependency_links,
     author_email='ernst.odolphi@gmail.com',
-    entry_points = {
-        'console_scripts': ['linteralls=linteralls:push'],
+    entry_points={
+        'console_scripts': ['linter=linter:push'],
     }
 )
