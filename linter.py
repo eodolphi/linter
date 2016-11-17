@@ -15,7 +15,7 @@ def push():
     commit = repo.commit()
 
     data = {
-        'origin': [remote.origin.url for remote in repo.remotes],
+        'origin': [remote.url for remote in repo.remotes],
         'branch': str(repo.active_branch),
         'commit': commit.hexsha,
         'author': {
