@@ -1,34 +1,20 @@
-import json
+import os
 import sys
 from urlparse import urljoin
 
-import git
 import requests
 
-API_URL = 'http://localhost:5000'
 
-
-def push():
-    report = sys.stdin.readlines()
-
-    repo = git.Repo('.')
-    commit = repo.commit()
-
-    data = {
-        'origin': [remote.url for remote in repo.remotes],
-        'branch': str(repo.active_branch),
-        'commit': commit.hexsha,
-        'author': {
-            'name': commit.author.name,
-            'email': commit.author.email
-        },
-        'report': [line.strip() for line in report]
-    }
-
-    print json.dumps(data, indent=4)
-    response = requests.post(
-        urljoin(API_URL, 'reports'),
-        data=json.dumps(data),
-        headers={'Content-Type': 'application/json'}
+def upload():
+    url = urljoin(
+        os.environ['LINTER_URL'], '/repos/{repo}/statuses/{sha}'
+    ).format(
+        repo=os.environ['TRAVIS_REPO_SLUG'],
+        sha=os.environ['TRAVIS_PULL_REQUEST_SHA']
     )
-    response.raise_for_status()
+
+    requests.post(
+        url,
+        sys.stdin.read()
+    )
+

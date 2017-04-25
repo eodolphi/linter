@@ -1,4 +1,1 @@
-# Dev/Deployment
-nose
-coverage
-pypi-publisher
+requests==2.13.0
